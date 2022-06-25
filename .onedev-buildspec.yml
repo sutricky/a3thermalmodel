@@ -1,0 +1,40 @@
+version: 16
+jobs:
+- name: ci
+  steps:
+  - !CheckoutStep
+    name: checkout
+    cloneCredential: !DefaultCredential {}
+    withLfs: false
+    withSubmodules: false
+    cloneDepth: 1
+    condition: ALL_PREVIOUS_STEPS_WERE_SUCCESSFUL
+  - !CommandStep
+    name: generate artifact
+    runInContainer: true
+    image: python:3.10-slim-bullseye
+    interpreter: !DefaultInterpreter
+      commands:
+      - apt-get update && apt-get install -y --no-install-recommends make
+      - pip install -U -r ./requirements.txt
+      - sed -i 's/pipenv run//' Makefile
+      - make
+      - tar -cvzf out.tar.gz out/
+      - tar -cvzf fig.tar.gz fig/
+    useTTY: false
+    condition: ALL_PREVIOUS_STEPS_WERE_SUCCESSFUL
+  - !PublishArtifactStep
+    name: publish artifact
+    artifacts: out.tar.gz fig.tar.gz
+    condition: ALL_PREVIOUS_STEPS_WERE_SUCCESSFUL
+  triggers:
+  - !BranchUpdateTrigger {}
+  retryCondition: never
+  maxRetries: 3
+  retryDelay: 30
+  cpuRequirement: 250
+  memoryRequirement: 256
+  caches:
+  - key: a3tm_pip_cache
+    path: /root/.cache/pip
+  timeout: 3600
