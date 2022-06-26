@@ -53,6 +53,7 @@ def main():
 
     plt.figure()
     plt.bar(nodes, rmse)
+    plt.yticks(np.arange(0,1.1,step=0.1))
     plt.title("Root Mean Squared Error")
     plt.xlabel("Node")
     plt.ylabel("Error (°C)")
@@ -60,6 +61,7 @@ def main():
     plt.close()
     plt.figure()
     plt.bar(nodes, r2)
+    plt.yticks(np.arange(0,1.1,step=0.1))
     plt.title("R2 Score")
     plt.xlabel("Node")
     plt.ylabel("Score")
