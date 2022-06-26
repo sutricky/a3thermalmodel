@@ -15,7 +15,7 @@ jobs:
     image: python:3.10-slim-bullseye
     interpreter: !DefaultInterpreter
       commands:
-      - apt-get update && apt-get install -y --no-install-recommends make
+      - apt-get update && apt-get install -y --no-install-recommends make graphviz
       - pip install -U -r ./requirements.txt
       - sed -i 's/pipenv run//' Makefile
       - make
