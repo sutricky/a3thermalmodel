@@ -15,12 +15,14 @@ NODES := $(foreach date,$(DATES),$(addsuffix _$(date).csv, $(NODE_PREFIX)))
 PREDICTIONS := $(patsubst in/raw_%.csv,out/prediction_%.csv,$(RAWS))
 FIGURES := $(patsubst in/raw_%.csv,fig/%.png,$(RAWS))
 STATS := $(patsubst in/raw_%.csv,out/stat_%.txt,$(RAWS))
+GRAPH_SOURCES := $(shell ls src/graph_*.py)
+GRAPHS := $(patsubst src/graph_%.py,fig/graph_%.png,$(GRAPH_SOURCES))
 
 include config.mk
 
 .PHONY: all setup req clean-stat clean-fig clean-pred
 
-all: clean solar albedo earth dataset node prediction stat figure
+all: clean solar albedo earth dataset node prediction stat figure graph
 
 clean:
 	mkdir -p out fig
@@ -84,6 +86,11 @@ figure: $(FIGURES)
 
 fig/%.png: out/prediction_%.csv
 	pipenv run python3 src/create_figures.py $< $*
+
+graph: $(GRAPHS)
+
+fig/graph_%.png: src/graph_%.py
+	pipenv run python3 $<
 
 setup: Pipfile Pipfile.lock
 	pipenv install
