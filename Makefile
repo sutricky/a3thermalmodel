@@ -14,6 +14,7 @@ NODE_PATTERN := $(addsuffix _%.csv,$(NODE_PREFIX))
 NODES := $(foreach date,$(DATES),$(addsuffix _$(date).csv, $(NODE_PREFIX)))
 PREDICTIONS := $(patsubst in/raw_%.csv,out/prediction_%.csv,$(RAWS))
 FIGURES := $(patsubst in/raw_%.csv,fig/%.png,$(RAWS))
+PAPERS := $(patsubst in/raw_%.csv,fig/paper_%.png,$(RAWS))
 STATS := $(patsubst in/raw_%.csv,out/stat_%.txt,$(RAWS))
 GRAPH_SOURCES := $(shell ls src/graph_*.py)
 GRAPHS := $(patsubst src/graph_%.py,fig/graph_%.png,$(GRAPH_SOURCES))
@@ -89,6 +90,11 @@ figure: $(FIGURES)
 
 fig/%.png: out/prediction_%.csv
 	pipenv run python3 src/create_figures.py $< $*
+
+paper: $(PAPERS)
+
+fig/paper_%.png: out/prediction_%.csv
+	pipenv run python3 src/create_paperfigures.py $< $*
 
 graph: $(GRAPHS)
 
