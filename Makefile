@@ -20,7 +20,7 @@ GRAPHS := $(patsubst src/graph_%.py,fig/graph_%.png,$(GRAPH_SOURCES))
 
 include config.mk
 
-.PHONY: all setup req clean-stat clean-fig clean-pred
+.PHONY: all setup req clean-stat clean-fig clean-pred clean-graph
 
 all: clean solar albedo earth dataset node prediction stat figure graph
 
@@ -36,6 +36,9 @@ clean-fig:
 
 clean-pred:
 	rm -f out/prediction*
+
+clean-graph:
+	rm -f fig/graph_*
 
 base: $(BASES)
 
