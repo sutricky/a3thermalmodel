@@ -23,7 +23,7 @@ include config.mk
 
 .PHONY: all setup req clean-stat clean-fig clean-pred clean-graph
 
-all: clean solar albedo earth dataset node prediction stat figure graph
+all: clean solar albedo earth dataset node prediction stat figure paper graph
 
 clean:
 	mkdir -p out fig
