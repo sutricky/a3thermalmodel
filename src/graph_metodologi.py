@@ -1,0 +1,22 @@
+from graphviz import Digraph
+
+dot = Digraph('metodologi',comment='Metodologi penelitian',format='png',node_attr={'shape': 'rectangle'})
+dot.node('mulai','MULAI',style="rounded")
+dot.node('selesai','SELESAI',style="rounded")
+dot.node('pustaka','Melakukan studi pustaka')
+dot.node('kumpul','Mengumpulkan data')
+dot.node('buat','Membuat dataset')
+dot.node('bagi','Membagi data menjadi set latihan dan ujian')
+dot.node('latih','Melatih model regresi linear Machine Learning')
+dot.node('dapat','Mendapatkan hasil prediksi model termal')
+dot.node('evaluasi','Mengevaluasi performa model termal')
+dot.edge('mulai','pustaka')
+dot.edge('pustaka','kumpul')
+dot.edge('kumpul','buat')
+dot.edge('buat','bagi')
+dot.edge('bagi','latih')
+dot.edge('latih','dapat')
+dot.edge('dapat','evaluasi')
+dot.edge('evaluasi','selesai')
+
+dot.render(filename='graph_metodologi',directory='fig').replace('\\', '/')
