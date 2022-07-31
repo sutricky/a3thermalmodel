@@ -2,9 +2,11 @@
 
 ## Notes
 
-This project is based on a 7-nodes model of the LAPAN-A3
-microsatellite which consists of 6 nodes for each of the satellite's
-sides and 1 node for the satellite's inner structure. It's also assumed that the input data will be categorized by date such that each file represent the satellite's data for the particular day only.
+This project is based on a 7-nodes model of the LAPAN-A3 microsatellite which
+consists of 6 nodes for each of the satellite's sides and 1 node for the
+satellite's inner structure. It's also assumed that the input data will be
+categorized by date such that each file represent the satellite's data for the
+particular day only.
 
 ## Configuration
 
@@ -30,4 +32,3 @@ There are 3 main outputs of the satellite thermal model :
 This project requires Python 3.10, pipenv, and GNU Make. After cloning the
 project repository, use `make setup` to quicky install required packages. Then,
 just run `make` at the project root.
-
