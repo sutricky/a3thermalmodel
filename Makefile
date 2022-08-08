@@ -18,12 +18,13 @@ PAPERS := $(patsubst in/raw_%.csv,fig/paper_%.png,$(RAWS))
 STATS := $(patsubst in/raw_%.csv,out/stat_%.txt,$(RAWS))
 GRAPH_SOURCES := $(shell ls src/graph_*.py)
 GRAPHS := $(patsubst src/graph_%.py,fig/graph_%.png,$(GRAPH_SOURCES))
+ATTITUDES := $(patsubst in/raw_%.csv,fig/attitude_%.png,$(RAWS))
 
 include config.mk
 
-.PHONY: all setup req clean-stat clean-fig clean-pred clean-graph
+.PHONY: all setup req clean-stat clean-fig clean-pred clean-graph attitude
 
-all: clean solar albedo earth dataset node prediction stat figure paper graph
+all: clean solar albedo earth dataset node prediction stat figure paper graph attitude
 
 clean:
 	mkdir -p out fig
@@ -100,6 +101,11 @@ graph: $(GRAPHS)
 
 fig/graph_%.png: src/graph_%.py
 	pipenv run python3 $<
+
+attitude: $(ATTITUDES)
+
+fig/attitude_%.png: in/raw_%.csv
+	pipenv run python3 src/create_attitude.py $< $*
 
 setup: Pipfile Pipfile.lock
 	pipenv install
