@@ -3,7 +3,7 @@
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
-from sklearn.metrics import r2_score, mean_squared_error
+from sklearn.metrics import r2_score, mean_squared_error, mean_absolute_error
 import sys, re, math
 
 def main():
@@ -13,6 +13,7 @@ def main():
     nodes = range(1,8)
     rmse = []
     r2 = []
+    mae = []
     abs_error = [[]]
     node_error = [[]]
     for i in range(7):
@@ -47,7 +48,9 @@ def main():
         plt.close()
         
         # RMSE plot
-        rmse.append(math.sqrt(mean_squared_error(data[f"t{i+1}o"]-273.15, data[f"t{i+1}p"]-273.15)))
+        rmse.append(mean_squared_error(data[f"t{i+1}o"]-273.15, data[f"t{i+1}p"]-273.15,squared=False))
+        # MAE plot
+        mae.append(mean_absolute_error(data[f"t{i+1}o"]-273.15, data[f"t{i+1}p"]-273.15))
         # R2 plot
         r2.append(r2_score(data[f"t{i+1}o"], data[f"t{i+1}p"]))
 
@@ -58,6 +61,13 @@ def main():
     plt.xlabel("Node")
     plt.ylabel("Error (°C)")
     plt.savefig(f"fig/rmse_{date}.png", bbox_inches='tight')
+    plt.close()
+    plt.figure()
+    plt.bar(nodes, mae)
+    plt.title("Mean Absolute Error")
+    plt.xlabel("Node")
+    plt.ylabel("Error (°C)")
+    plt.savefig(f"fig/mae_{date}.png", bbox_inches='tight')
     plt.close()
     plt.figure()
     plt.bar(nodes, r2)
