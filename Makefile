@@ -14,17 +14,21 @@ NODE_PATTERN := $(addsuffix _%.csv,$(NODE_PREFIX))
 NODES := $(foreach date,$(DATES),$(addsuffix _$(date).csv, $(NODE_PREFIX)))
 PREDICTIONS := $(patsubst in/raw_%.csv,out/prediction_%.csv,$(RAWS))
 FIGURES := $(patsubst in/raw_%.csv,fig/%.png,$(RAWS))
+BASEFIGURES := $(patsubst in/raw_%.csv,fig/base_%.png,$(RAWS))
+RAWFIGURES := $(patsubst in/raw_%.csv,fig/raw_%.png,$(RAWS))
+SOLARFIGURES := $(patsubst in/raw_%.csv,fig/solar_%.png,$(RAWS))
+EARTHFIGURES := $(patsubst in/raw_%.csv,fig/earth_%.png,$(RAWS))
+ALBEDOFIGURES := $(patsubst in/raw_%.csv,fig/albedo_%.png,$(RAWS))
 PAPERS := $(patsubst in/raw_%.csv,fig/paper_%.png,$(RAWS))
 STATS := $(patsubst in/raw_%.csv,out/stat_%.txt,$(RAWS))
 GRAPH_SOURCES := $(shell ls src/graph_*.py)
 GRAPHS := $(patsubst src/graph_%.py,fig/graph_%.png,$(GRAPH_SOURCES))
-ATTITUDES := $(patsubst in/raw_%.csv,fig/attitude_%.png,$(RAWS))
 
 include config.mk
 
-.PHONY: all setup req clean-stat clean-fig clean-pred clean-graph attitude
+.PHONY: all setup req clean-stat clean-fig clean-pred clean-graph
 
-all: clean solar albedo earth dataset node prediction stat figure paper graph attitude
+all: clean solar albedo earth dataset node prediction stat figure paper graph rawfig basefig solarfig earthfig albfig
 
 clean:
 	mkdir -p out fig
@@ -102,10 +106,31 @@ graph: $(GRAPHS)
 fig/graph_%.png: src/graph_%.py
 	pipenv run python3 $<
 
-attitude: $(ATTITUDES)
+rawfig: $(RAWFIGURES)
 
-fig/attitude_%.png: in/raw_%.csv
-	pipenv run python3 src/create_attitude.py $< $*
+fig/raw_%.png: out/base_%.csv
+	pipenv run python3 src/create_rawfigures.py $< $*
+
+basefig: $(BASEFIGURES)
+
+fig/base_%.png: out/base_%.csv
+	pipenv run python3 src/create_basefigures.py $< $*
+
+solfig: $(SOLARFIGURES)
+
+fig/solar_%.png: out/base_%.csv out/solar_%.csv
+	pipenv run python3 src/create_solarfigures.py $^ $*
+
+earthfig: $(EARTHFIGURES)
+
+fig/earth_%.png: out/base_%.csv out/earth_%.csv
+	pipenv run python3 src/create_earthfigures.py $^ $*
+
+albfig: $(ALBEDOFIGURES)
+
+fig/albedo_%.png: out/base_%.csv out/albedo_%.csv
+	pipenv run python3 src/create_albedofigures.py $^ $*
+
 
 setup: Pipfile Pipfile.lock
 	pipenv install
