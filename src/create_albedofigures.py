@@ -1,7 +1,6 @@
 # LAPAN-A3 Satellite Thermal Modelling
 # Copyright (c) 2022 Ricky Sutardi
-# Create raw plots of node temperature, satellite attitude, and sun sensor from
-# base dataset
+# Create plots of albedo heat factor
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
