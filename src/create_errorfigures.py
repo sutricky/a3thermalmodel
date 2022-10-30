@@ -17,7 +17,7 @@ def main():
     plt.hist(error, bins=[-4,-3,-2,-1,0,1,2,3,4])
     plt.title(f"Node Temperature Error Distribution")
     plt.xlabel("Error (°C)")
-    plt.ylabel("Count")
+    plt.ylabel("Frequency")
     plt.savefig(f"fig/error_{date}.png", bbox_inches='tight')
     plt.close()
 
