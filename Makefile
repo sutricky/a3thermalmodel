@@ -19,6 +19,7 @@ RAWFIGURES := $(patsubst in/raw_%.csv,fig/raw_%.png,$(RAWS))
 SOLARFIGURES := $(patsubst in/raw_%.csv,fig/solar_%.png,$(RAWS))
 EARTHFIGURES := $(patsubst in/raw_%.csv,fig/earth_%.png,$(RAWS))
 ALBEDOFIGURES := $(patsubst in/raw_%.csv,fig/albedo_%.png,$(RAWS))
+ERRORFIGURES := $(patsubst in/raw_%.csv,fig/error_%.png,$(RAWS))
 PAPERS := $(patsubst in/raw_%.csv,fig/paper_%.png,$(RAWS))
 STATS := $(patsubst in/raw_%.csv,out/stat_%.txt,$(RAWS))
 GRAPH_SOURCES := $(shell ls src/graph_*.py)
@@ -28,7 +29,7 @@ include config.mk
 
 .PHONY: all setup req clean-stat clean-fig clean-pred clean-graph
 
-all: clean solar albedo earth dataset node prediction stat figure paper graph rawfig basefig solarfig earthfig albfig
+all: clean solar albedo earth dataset node prediction stat figure paper graph rawfig basefig solarfig earthfig albfig errorfig
 
 clean:
 	mkdir -p out fig
@@ -136,6 +137,10 @@ solarfig: $(SOLARFIGURES)
 fig/solar_%.png: out/base_%.csv out/earth_%.csv
 	pipenv run python3 src/create_solarfigures.py $^ $*
 
+errorfig: $(ERRORFIGURES)
+
+fig/error_%.png: out/prediction_%.csv
+	pipenv run python3 src/create_errorfigures.py $< $*
 
 setup: Pipfile Pipfile.lock
 	pipenv install
