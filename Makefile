@@ -131,6 +131,11 @@ albfig: $(ALBEDOFIGURES)
 fig/albedo_%.png: out/base_%.csv out/albedo_%.csv
 	pipenv run python3 src/create_albedofigures.py $^ $*
 
+solarfig: $(SOLARFIGURES)
+
+fig/solar_%.png: out/base_%.csv out/earth_%.csv
+	pipenv run python3 src/create_solarfigures.py $^ $*
+
 
 setup: Pipfile Pipfile.lock
 	pipenv install
