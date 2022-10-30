@@ -29,6 +29,6 @@ There are 3 main outputs of the satellite thermal model :
 
 ## Instruction
 
-This project requires Python 3.10, pipenv, and GNU Make. After cloning the
-project repository, use `make setup` to quicky install required packages. Then,
-just run `make` at the project root.
+This project requires Python 3.10, pipenv, graphviz, and GNU Make.
+After cloning the project repository, use `make setup` to quicky
+install required packages. Then, just run `make` at the project root.
