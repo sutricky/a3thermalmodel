@@ -142,6 +142,9 @@ errorfig: $(ERRORFIGURES)
 fig/error_%.png: out/prediction_%.csv
 	pipenv run python3 src/create_errorfigures.py $< $*
 
+icares: out/prediction_2018-05-19.csv out/prediction_2018-05-20.csv
+	pipenv run python3 src/create_icares.py $^
+
 setup: Pipfile Pipfile.lock
 	pipenv install
 
